@@ -10,7 +10,7 @@ const transactionSchema = new mongoose.Schema({
     booklist :  [{ type: Schema.Types.ObjectId, ref: 'Book' }]
 })
 
-transactionSchema.post("findOneAndUpdate", function(doc) {
+transactionSchema.post("findOneAndUpdate", function(doc,next) {
     dt1 = new Date(doc.due_date);
     dt2 = new Date(doc.in_date);
     // console.log(dt1, '/////')
@@ -22,6 +22,7 @@ transactionSchema.post("findOneAndUpdate", function(doc) {
         doc.fine += (1000 * diff)
     }
     doc.save()
+    next()
 })
 
 module.exports = mongoose.model('Transaction', transactionSchema)
